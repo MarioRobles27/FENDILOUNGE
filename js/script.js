@@ -28,6 +28,47 @@ if (typeof gsap !== "undefined") {
       ease: "power3.out"
     });
   });
+
+  // -------- HERO: efecto tipográfico en bucle --------
+  const heroLines = document.querySelectorAll(".hero-title-line");
+  if (heroLines.length) {
+    const tlHero = gsap.timeline({
+      repeat: -1,
+      yoyo: true
+    });
+
+    tlHero
+      .to(".hero-title-line2", {
+        duration: 1.4,
+        letterSpacing: "0.25em",
+        ease: "power2.inOut"
+      })
+      .to(
+        ".hero-title-line3",
+        {
+          duration: 1.4,
+          y: -6,
+          scale: 1.04,
+          ease: "power2.inOut"
+        },
+        "<0.1" // empieza casi a la vez
+      )
+      .to(".hero-title-line2", {
+        duration: 1.2,
+        letterSpacing: "0.05em",
+        ease: "power2.inOut"
+      })
+      .to(
+        ".hero-title-line3",
+        {
+          duration: 1.2,
+          y: 0,
+          scale: 1,
+          ease: "power2.inOut"
+        },
+        "<"
+      );
+  }
 }
 
 // Año automático en el footer
@@ -146,3 +187,31 @@ if (scrollGalleryWrapper && typeof gsap !== "undefined" && typeof ScrollTrigger 
     });
   }
 }
+
+// ---------- HERO: degradado que sigue al ratón ----------
+
+const heroSection = document.querySelector(".hero-section");
+
+if (heroSection) {
+  const updateHeroGradient = (event) => {
+    const rect = heroSection.getBoundingClientRect();
+    const x = ((event.clientX - rect.left) / rect.width) * 100;
+    const y = ((event.clientY - rect.top) / rect.height) * 100;
+
+    heroSection.style.setProperty("--mouse-x", `${x}%`);
+    heroSection.style.setProperty("--mouse-y", `${y}%`);
+  };
+
+  heroSection.addEventListener("mousemove", updateHeroGradient);
+
+  heroSection.addEventListener("mouseleave", () => {
+    // volvemos a una posición neutra cuando sales del hero
+    heroSection.style.setProperty("--mouse-x", "50%");
+    heroSection.style.setProperty("--mouse-y", "25%");
+  });
+}
+
+// ---------- AOS (si está cargado) ----------
+
+
+  AOS.init();

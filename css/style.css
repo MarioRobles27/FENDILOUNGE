@@ -141,15 +141,25 @@ a {
   min-height: 100vh;
   background: url("../img/hero-fendi.jpg") center/cover no-repeat fixed;
   color: #fff;
+
+  /* posición inicial del foco de luz */
+  --mouse-x: 50%;
+  --mouse-y: 25%;
 }
 
 .hero-section .overlay {
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(circle at top, rgba(207, 179, 97, 0.20), transparent 55%),
+    radial-gradient(circle at var(--mouse-x) var(--mouse-y),
+      rgba(207, 179, 97, 0.25),
+      transparent 55%
+    ),
     radial-gradient(circle at bottom, #000000, #000000);
+  transition: background 0.15s ease-out;
+  pointer-events: none; /* importante para que el ratón interactúe con el contenido */
 }
+
 
 .hero-section .container {
   position: relative;
@@ -166,6 +176,38 @@ a {
 .brand-highlight {
   color: var(--fendi-primary);
 }
+
+/* Título hero */
+
+.hero-title {
+  text-align: center;
+  line-height: 1.05;
+}
+
+.hero-title-line {
+  display: block;
+}
+
+.hero-title-line1 {
+  font-size: 1.1rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  margin-bottom: 0.5rem;
+}
+
+.hero-title-line2,
+.hero-title-line3 {
+  font-size: clamp(2.4rem, 4.5vw, 3.6rem);
+}
+
+.hero-title-line2 {
+  letter-spacing: 0.05em;
+}
+
+.hero-title-line3 {
+  margin-top: 0.15rem;
+}
+
 
 .btn-fendi-primary {
   background: var(--fendi-primary);

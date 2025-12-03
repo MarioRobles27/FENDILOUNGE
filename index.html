@@ -8,7 +8,7 @@
 
   <!-- Google Fonts -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
   <!-- BOOTSTRAP CSS -->
   <link
     href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
@@ -73,9 +73,12 @@
       <div class="row justify-content-center">
         <div class="col-lg-8 text-center hero-content">
           <p class="hero-tagline mb-2">Bar · Tetería · Cachimbas · Copas · Batidos</p>
-          <h1 class="display-4 fw-semibold mb-3">
-            Bienvenido a <span class="brand-highlight">Fendi Lounge</span>
+          <h1 class="hero-title mb-3">
+            <span class="hero-title-line hero-title-line1">Bienvenido a</span>
+            <span class="hero-title-line hero-title-line2">Lounge</span>
+            <span class="hero-title-line hero-title-line3 brand-highlight">Fendi</span>
           </h1>
+
           <p class="lead mb-4">
             Un punto de encuentro para disfrutar de buenas cachimbas, música y cocktails en un ambiente íntimo y acogedor.
           </p>
@@ -139,7 +142,7 @@
 
   <!-- DESTACADOS CARTA -->
   <section id="menu" class="section-padding">
-    <div class="container">
+    <div class="container fade-up">
       <div class="row mb-5 justify-content-between align-items-end">
         <div class="col-lg-7 gsap-fade-up">
           <h2 class="section-title">Nuestra carta</h2>
@@ -155,7 +158,7 @@
         </div>
       </div>
 
-      <div class="row gy-4">
+      <div class="row gy-4 fade-up">
         <!-- Producto destacado 1 -->
         <div class="col-md-6 col-lg-3 gsap-fade-up">
           <div class="card card-menu h-100">
@@ -173,7 +176,7 @@
         </div>
 
         <!-- Producto destacado 2 -->
-        <div class="col-md-6 col-lg-3 gsap-fade-up">
+        <div class="col-md-6 col-lg-3 gsap-fade-up fade-up">
           <div class="card card-menu h-100">
             <div class="card-body">
               <h5 class="card-title">Batido Oreo Crush</h5>
@@ -497,6 +500,7 @@
 
   <!-- JS: BOOTSTRAP + GSAP + MAIN -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
   <!-- GSAP -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
