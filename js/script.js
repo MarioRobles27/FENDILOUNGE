@@ -73,7 +73,6 @@ function onScroll() {
 window.addEventListener("scroll", onScroll);
 onScroll();
 
-
 // ---------- NAVBAR: efecto reducir al hacer scroll ----------
 
 const navbar = document.querySelector(".navbar");
@@ -92,4 +91,58 @@ if (navbar) {
 
   // escuchar el scroll
   window.addEventListener("scroll", toggleNavbarSize);
+}
+
+// ---------- COOKIE BANNER ----------
+
+const cookieBanner = document.getElementById("cookieBanner");
+const cookieAcceptBtn = document.getElementById("cookieAcceptBtn");
+const cookieCloseBtn = document.getElementById("cookieCloseBtn");
+
+const COOKIE_KEY = "fendi_cookies_accepted";
+
+if (cookieBanner && cookieAcceptBtn && cookieCloseBtn) {
+  const hasAccepted = localStorage.getItem(COOKIE_KEY);
+
+  // Mostrar solo si no se ha aceptado antes
+  if (!hasAccepted) {
+    setTimeout(() => {
+      cookieBanner.classList.add("visible");
+    }, 800); // pequeño delay para que no sea agresivo
+  }
+
+  const handleAccept = () => {
+    localStorage.setItem(COOKIE_KEY, "true");
+    cookieBanner.classList.remove("visible");
+  };
+
+  const handleClose = () => {
+    // Aquí podrías guardar otro estado si quisieras
+    cookieBanner.classList.remove("visible");
+  };
+
+  cookieAcceptBtn.addEventListener("click", handleAccept);
+  cookieCloseBtn.addEventListener("click", handleClose);
+}
+
+// ---------- GALERÍA HORIZONTAL SCROLL FENDI ----------
+
+const scrollGalleryWrapper = document.querySelector(".fendi-scroll-gallery-wrapper");
+
+if (scrollGalleryWrapper && typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
+  const panels = gsap.utils.toArray(".fendi-scroll-gallery .fendi-scroll-panel");
+
+  if (panels.length > 1) {
+    gsap.to(panels, {
+      xPercent: -100 * (panels.length - 1),
+      ease: "none",
+      scrollTrigger: {
+        trigger: scrollGalleryWrapper,
+        pin: true,
+        scrub: 1,
+        snap: 1 / (panels.length - 1), // encaja en cada foto
+        end: () => "+=" + window.innerHeight * (panels.length - 1)
+      }
+    });
+  }
 }
