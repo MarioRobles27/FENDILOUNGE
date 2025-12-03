@@ -184,21 +184,49 @@ a {
   line-height: 1.05;
 }
 
+/* cada línea del título */
 .hero-title-line {
   display: block;
 }
+
+/* línea FENDI LOUNGE: la centramos con flex */
+.hero-title-line3 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: clamp(3.2rem, 7vw, 5.2rem);
+  margin-top: 0.15rem;
+}
+
 
 .hero-title-line1 {
   font-size: 1.1rem;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1.7rem;
 }
 
 .hero-title-line2,
 .hero-title-line3 {
-  font-size: clamp(2.4rem, 4.5vw, 3.6rem);
+  font-size: clamp(3.2rem, 7vw, 5.2rem); /* más grande */
 }
+
+/* === EFECTO "CANADA DAY" PARA FENDI LOUNGE === */
+
+/* === EFECTO "CANADA DAY" PARA FENDI LOUNGE === */
+
+.hero-canada.text5 {
+  display: inline-block;
+  letter-spacing: 0.18em;  /* un poco más cerrado para que quepa grande */
+  text-transform: uppercase;
+  white-space: nowrap;      /* clave: que no se rompa la línea */
+}
+
+.hero-canada.text5 span {
+  display: inline-block;
+}
+
+
 
 .hero-title-line2 {
   letter-spacing: 0.05em;
@@ -650,6 +678,137 @@ a {
   padding-inline: 1.2rem;
   font-size: 0.8rem;
 }
+
+.menu-grid {
+  margin-bottom: 3rem;
+  padding: 2.5rem 2rem;
+  border-radius: 24px;
+  background: #050505;
+}
+
+.menu-column {
+  padding-inline: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+@media (min-width: 992px) {
+  .menu-column + .menu-column {
+    border-left: 1px solid rgba(255, 255, 255, 0.06);
+  }
+}
+
+.menu-index {
+  list-style: none;
+  padding: 0;
+}
+
+.menu-index a {
+  color: rgba(247, 243, 255, 0.7);
+  text-decoration: none;
+}
+
+.menu-index a:hover {
+  color: var(--fendi-primary);
+}
+
+/* =========================
+   CARTA – EFECTO SPOTLIGHT
+   ========================= */
+
+.menu-cards {
+  position: relative;
+  margin-top: 3rem;
+  margin-bottom: 3rem;
+}
+
+.menu-cards__inner {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.5rem;
+}
+
+/* Cada “tarjeta” de la carta */
+.menu-card {
+  --hue: 42;
+  --saturation: 64%;
+  --lightness: 52%;
+  --hsl: var(--hue), var(--saturation), var(--lightness);
+
+  flex: 1 1 18rem;
+  padding: 2rem 2.2rem;
+  border-radius: 18px;
+  background-color: #050505;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+
+  color: #f7f3ff;
+}
+
+/* ligeras variaciones de tono por card para el halo */
+.menu-card:nth-child(2) { --hue: 35; }
+.menu-card:nth-child(3) { --hue: 48; }
+.menu-card:nth-child(4) { --hue: 38; }
+.menu-card:nth-child(5) { --hue: 46; }
+.menu-card:nth-child(6) { --hue: 32; }
+.menu-card:nth-child(7) { --hue: 50; }
+
+.menu-card .menu-block:last-child {
+  margin-bottom: 0;
+}
+
+/* grupos internos (GIN, VODKA, etc.) */
+.menu-subgroup + .menu-subgroup {
+  margin-top: 1.4rem;
+}
+
+.menu-note {
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+/* overlay del foco */
+.menu-cards__overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  user-select: none;
+
+  opacity: var(--opacity, 0);
+  -webkit-mask: radial-gradient(
+    25rem 25rem at var(--x) var(--y),
+    #000 1%,
+    transparent 55%
+  );
+  mask: radial-gradient(
+    25rem 25rem at var(--x) var(--y),
+    #000 1%,
+    transparent 55%
+  );
+  transition:
+    400ms mask ease,
+    200ms opacity ease;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2.5rem;
+}
+
+/* cómo se ve la card “iluminada” */
+.menu-cards__overlay .menu-card {
+  background-color: hsla(var(--hsl), 0.18);
+  border-color: hsla(var(--hsl), 1);
+  box-shadow: 0 0 0 1px inset hsl(var(--hsl));
+}
+
+/* hover suave aunque no haya foco muy cerca */
+.menu-cards__inner > .menu-card {
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.menu-cards__inner > .menu-card:hover {
+  transform: translateY(-4px);
+  background: hsla(var(--hsl), 0.12);
+}
+
 
 /* En pantallas grandes, colocamos texto y botones en fila */
 @media (min-width: 768px) {

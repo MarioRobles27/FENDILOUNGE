@@ -4,7 +4,7 @@
 if (typeof gsap !== "undefined") {
   gsap.registerPlugin(ScrollTrigger);
 
-  // Hero: animación de entrada
+  // ---------------- HERO: animación de entrada general ----------------
   gsap.from(".hero-content", {
     opacity: 0,
     y: 40,
@@ -13,7 +13,7 @@ if (typeof gsap !== "undefined") {
     delay: 0.2
   });
 
-  // Animación genérica para los elementos con la clase .gsap-fade-up
+  // ---------------- Bloques .gsap-fade-up ----------------
   const fadeUpElements = document.querySelectorAll(".gsap-fade-up");
   fadeUpElements.forEach((el) => {
     gsap.from(el, {
@@ -29,55 +29,98 @@ if (typeof gsap !== "undefined") {
     });
   });
 
-  // -------- HERO: efecto tipográfico en bucle --------
-  const heroLines = document.querySelectorAll(".hero-title-line");
-  if (heroLines.length) {
-    const tlHero = gsap.timeline({
-      repeat: -1,
-      yoyo: true
-    });
+  // ---------------- EFECTO "FENDI LOUNGE" SUBE/BAJA ----------------
+const canadaEl = document.querySelector(".hero-canada.text5");
 
-    tlHero
-      .to(".hero-title-line2", {
-        duration: 1.4,
-        letterSpacing: "0.25em",
-        ease: "power2.inOut"
-      })
-      .to(
-        ".hero-title-line3",
-        {
-          duration: 1.4,
-          y: -6,
-          scale: 1.04,
-          ease: "power2.inOut"
-        },
-        "<0.1" // empieza casi a la vez
-      )
-      .to(".hero-title-line2", {
-        duration: 1.2,
-        letterSpacing: "0.05em",
-        ease: "power2.inOut"
-      })
-      .to(
-        ".hero-title-line3",
-        {
-          duration: 1.2,
-          y: 0,
-          scale: 1,
-          ease: "power2.inOut"
-        },
-        "<"
-      );
+if (canadaEl) {
+  const originalText = canadaEl.textContent.trim();
+
+  canadaEl.textContent = "";
+  originalText.split("").forEach((char) => {
+    const span = document.createElement("span");
+    span.textContent = char === " " ? "\u00A0" : char;
+    canadaEl.appendChild(span);
+  });
+
+  const letters = canadaEl.querySelectorAll("span");
+
+  // Estado base: más tenue para que el golpe de luz sea potente
+  gsap.set(letters, {
+    opacity: 0.25,
+    y: 0
+  });
+
+  const tl = gsap.timeline({ repeat: -1 });
+
+  tl.to(letters, {
+    duration: 0.5,
+    opacity: 1,
+    y: -12,              // suben más
+    ease: "power2.out",
+    stagger: 0.06,       // ola un pelín más rápida
+    delay: 0.3
+  })
+  .to(letters, {
+    duration: 0.5,
+    opacity: 0.25,       // vuelven a tenue, pero sin desaparecer
+    y: 0,
+    ease: "power2.inOut",
+    stagger: 0.06,
+    delay: 0.25
+  });
+}
+
+
+  // ---------------- GALERÍA HORIZONTAL SCROLL FENDI ----------------
+  const scrollGalleryWrapper = document.querySelector(".fendi-scroll-gallery-wrapper");
+
+  if (scrollGalleryWrapper && typeof ScrollTrigger !== "undefined") {
+    const panels = gsap.utils.toArray(".fendi-scroll-gallery .fendi-scroll-panel");
+
+    if (panels.length > 1) {
+      gsap.to(panels, {
+        xPercent: -100 * (panels.length - 1),
+        ease: "none",
+        scrollTrigger: {
+          trigger: scrollGalleryWrapper,
+          pin: true,
+          scrub: 1,
+          snap: 1 / (panels.length - 1), // encaja en cada foto
+          end: () => "+=" + window.innerHeight * (panels.length - 1)
+        }
+      });
+    }
+  }
+
+  // ---------------- HERO: degradado que sigue al ratón ----------------
+  const heroSection = document.querySelector(".hero-section");
+
+  if (heroSection) {
+    const updateHeroGradient = (event) => {
+      const rect = heroSection.getBoundingClientRect();
+      const x = ((event.clientX - rect.left) / rect.width) * 100;
+      const y = ((event.clientY - rect.top) / rect.height) * 100;
+
+      heroSection.style.setProperty("--mouse-x", `${x}%`);
+      heroSection.style.setProperty("--mouse-y", `${y}%`);
+    };
+
+    heroSection.addEventListener("mousemove", updateHeroGradient);
+
+    heroSection.addEventListener("mouseleave", () => {
+      heroSection.style.setProperty("--mouse-x", "50%");
+      heroSection.style.setProperty("--mouse-y", "25%");
+    });
   }
 }
 
-// Año automático en el footer
+// ---------------- Año automático en el footer ----------------
 const yearSpan = document.getElementById("year");
 if (yearSpan) {
   yearSpan.textContent = new Date().getFullYear();
 }
 
-// Evitar envío real del formulario de reservas (modo demo)
+// ---------------- Formulario reservas (demo) ----------------
 const reservaForm = document.querySelector(".reserva-form");
 if (reservaForm) {
   reservaForm.addEventListener("submit", function (e) {
@@ -88,7 +131,7 @@ if (reservaForm) {
   });
 }
 
-// Navbar: resaltar enlace activo según scroll
+// ---------------- Navbar: resaltar enlace activo ----------------
 const sections = document.querySelectorAll("section[id]");
 const navLinks = document.querySelectorAll(".navbar-nav .nav-link");
 
@@ -114,8 +157,7 @@ function onScroll() {
 window.addEventListener("scroll", onScroll);
 onScroll();
 
-// ---------- NAVBAR: efecto reducir al hacer scroll ----------
-
+// ---------------- Navbar: efecto reducir al hacer scroll ----------------
 const navbar = document.querySelector(".navbar");
 
 if (navbar) {
@@ -127,15 +169,11 @@ if (navbar) {
     }
   };
 
-  // ejecutar una vez al cargar (por si entras ya scrolleado)
   toggleNavbarSize();
-
-  // escuchar el scroll
   window.addEventListener("scroll", toggleNavbarSize);
 }
 
-// ---------- COOKIE BANNER ----------
-
+// ---------------- Cookie banner ----------------
 const cookieBanner = document.getElementById("cookieBanner");
 const cookieAcceptBtn = document.getElementById("cookieAcceptBtn");
 const cookieCloseBtn = document.getElementById("cookieCloseBtn");
@@ -145,11 +183,10 @@ const COOKIE_KEY = "fendi_cookies_accepted";
 if (cookieBanner && cookieAcceptBtn && cookieCloseBtn) {
   const hasAccepted = localStorage.getItem(COOKIE_KEY);
 
-  // Mostrar solo si no se ha aceptado antes
   if (!hasAccepted) {
     setTimeout(() => {
       cookieBanner.classList.add("visible");
-    }, 800); // pequeño delay para que no sea agresivo
+    }, 800);
   }
 
   const handleAccept = () => {
@@ -158,7 +195,6 @@ if (cookieBanner && cookieAcceptBtn && cookieCloseBtn) {
   };
 
   const handleClose = () => {
-    // Aquí podrías guardar otro estado si quisieras
     cookieBanner.classList.remove("visible");
   };
 
@@ -166,52 +202,60 @@ if (cookieBanner && cookieAcceptBtn && cookieCloseBtn) {
   cookieCloseBtn.addEventListener("click", handleClose);
 }
 
-// ---------- GALERÍA HORIZONTAL SCROLL FENDI ----------
-
-const scrollGalleryWrapper = document.querySelector(".fendi-scroll-gallery-wrapper");
-
-if (scrollGalleryWrapper && typeof gsap !== "undefined" && typeof ScrollTrigger !== "undefined") {
-  const panels = gsap.utils.toArray(".fendi-scroll-gallery .fendi-scroll-panel");
-
-  if (panels.length > 1) {
-    gsap.to(panels, {
-      xPercent: -100 * (panels.length - 1),
-      ease: "none",
-      scrollTrigger: {
-        trigger: scrollGalleryWrapper,
-        pin: true,
-        scrub: 1,
-        snap: 1 / (panels.length - 1), // encaja en cada foto
-        end: () => "+=" + window.innerHeight * (panels.length - 1)
-      }
-    });
-  }
+// ---------------- AOS (si está cargado) ----------------
+if (typeof AOS !== "undefined") {
+  AOS.init();
 }
 
-// ---------- HERO: degradado que sigue al ratón ----------
 
-const heroSection = document.querySelector(".hero-section");
+// ---------- CARTA: efecto spotlight en las 3 columnas principales ----------
 
-if (heroSection) {
-  const updateHeroGradient = (event) => {
-    const rect = heroSection.getBoundingClientRect();
-    const x = ((event.clientX - rect.left) / rect.width) * 100;
-    const y = ((event.clientY - rect.top) / rect.height) * 100;
+(function () {
+  const cardsContainer = document.querySelector(".menu-cards");
+  if (!cardsContainer) return; // solo en carta.html
 
-    heroSection.style.setProperty("--mouse-x", `${x}%`);
-    heroSection.style.setProperty("--mouse-y", `${y}%`);
+  const cards = Array.from(cardsContainer.querySelectorAll(".menu-card"));
+  const overlay = cardsContainer.querySelector(".menu-cards__overlay");
+
+  if (!cards.length || !overlay) return;
+
+  // sincroniza tamaño de cada card con su card clonada del overlay
+  const observer = new ResizeObserver((entries) => {
+    entries.forEach((entry) => {
+      const index = cards.indexOf(entry.target);
+      if (index === -1 || !overlay.children[index]) return;
+
+      const { inlineSize, blockSize } = entry.borderBoxSize[0];
+      overlay.children[index].style.width = `${inlineSize}px`;
+      overlay.children[index].style.height = `${blockSize}px`;
+    });
+  });
+
+  // crea las "copias" vacías dentro del overlay
+  const initOverlayCard = (cardEl) => {
+    const overlayCard = document.createElement("div");
+    overlayCard.classList.add("menu-card");
+    overlay.append(overlayCard);
+    observer.observe(cardEl);
   };
 
-  heroSection.addEventListener("mousemove", updateHeroGradient);
+  cards.forEach(initOverlayCard);
 
-  heroSection.addEventListener("mouseleave", () => {
-    // volvemos a una posición neutra cuando sales del hero
-    heroSection.style.setProperty("--mouse-x", "50%");
-    heroSection.style.setProperty("--mouse-y", "25%");
-  });
-}
+  // mueve el foco siguiendo el puntero dentro del bloque
+  const applyOverlayMask = (e) => {
+    const rect = cardsContainer.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
 
-// ---------- AOS (si está cargado) ----------
+    overlay.style.setProperty("--opacity", "1");
+    overlay.style.setProperty("--x", `${x}px`);
+    overlay.style.setProperty("--y", `${y}px`);
+  };
 
+  const hideOverlay = () => {
+    overlay.style.setProperty("--opacity", "0");
+  };
 
-  AOS.init();
+  cardsContainer.addEventListener("pointermove", applyOverlayMask);
+  cardsContainer.addEventListener("pointerleave", hideOverlay);
+})();
