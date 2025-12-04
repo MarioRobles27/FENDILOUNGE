@@ -96,6 +96,30 @@ a {
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.7);
 }
 
+/* Línea dorada inferior al encoger la navbar */
+.navbar::after {
+  content: "";
+  position: absolute;
+  left: 1.5rem;      /* distancia desde el borde izquierdo */
+  right: 1.5rem;     /* distancia desde el borde derecho */
+  bottom: 0;         /* pegado a la parte inferior */
+  height: 2px;       /* grosor de la línea */
+  background: var(--fendi-primary);
+  opacity: 0;
+  transform: scaleX(0.4); /* empieza más corta y “crece” */
+  transform-origin: center;
+  transition:
+    opacity 0.3s ease,
+    transform 0.3s ease;
+  pointer-events: none;
+}
+
+.navbar.navbar-shrink::after {
+  opacity: 1;
+  transform: scaleX(1); /* línea completa cuando se encoge */
+}
+
+
 
 .navbar-brand {
   letter-spacing: 0.08em;
@@ -105,13 +129,13 @@ a {
 
 .navbar-brand-logo {
   display: block;
-  height: 20px;
+  height: 60px;
   width: auto;
 }
 
 /* Cuando la barra está reducida, el logo también se hace más pequeño */
 .navbar.navbar-shrink .navbar-brand-logo {
-  height: 16px;
+  height: 40px;
 }
 
 
@@ -282,6 +306,18 @@ a {
   text-align: center;
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
 }
+
+/* HERO específico para la página de carta */
+.page-hero--carta {
+  padding-top: 8rem;
+  padding-bottom: 6rem;
+  min-height: 55vh;              /* más alto */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
 
 .page-title {
   font-size: 2.4rem;
@@ -679,6 +715,13 @@ a {
   font-size: 0.8rem;
 }
 
+
+
+/* =========================
+   CARTA – GRID & TIPOGRAFÍA
+   ========================= */
+
+/* Contenedor general de la carta (borde redondeado y fondo) */
 .menu-grid {
   margin-bottom: 3rem;
   padding: 2.5rem 2rem;
@@ -697,6 +740,7 @@ a {
   }
 }
 
+/* Índice de secciones (si lo usas al principio) */
 .menu-index {
   list-style: none;
   padding: 0;
@@ -740,7 +784,7 @@ a {
   background-color: #050505;
   border: 1px solid rgba(255, 255, 255, 0.08);
 
-  color: #f7f3ff;
+  color: #f7f3ff; /* color base del texto dentro de la tarjeta */
 }
 
 /* ligeras variaciones de tono por card para el halo */
@@ -765,7 +809,26 @@ a {
   opacity: 0.85;
 }
 
-/* overlay del foco */
+/* ===== COLORES DE TÍTULOS Y TEXTOS ===== */
+
+/* Títulos de categoría de la carta: Shishas, Refrescos, Coffee y té, etc. */
+.menu-card h2,
+.menu-card h3,
+.menu-card-title,
+.menu-subtitle-title,
+.menu-group-title {
+  color: var(--fendi-primary); /* dorado corporativo */
+}
+
+/* Texto de productos, precios y notas en blanco */
+.menu-item-name,
+.menu-item-price,
+.menu-item-nota {
+  color: #f7f3ff;
+}
+
+/* ===== Overlay del foco (efecto spotlight) ===== */
+
 .menu-cards__overlay {
   position: absolute;
   inset: 0;
@@ -808,6 +871,30 @@ a {
   transform: translateY(-4px);
   background: hsla(var(--hsl), 0.12);
 }
+
+/* =========================
+   AJUSTE COLORES CARTA
+   ========================= */
+
+/* SOLO los títulos de categoría en dorado:
+   Shishas, Refrescos, Coffee y té, Cervezas, Vinos, Chupitos, Champagne… */
+.menu-card > h2,
+.menu-card > h3,
+.menu-card-title,
+.menu-group-title {
+  color: var(--fendi-primary);
+}
+
+/* Todos los productos y precios en blanco, sí o sí */
+.menu-card .menu-item-name,
+.menu-card .menu-item-price,
+.menu-card .menu-item-nota,
+.menu-card .menu-list li span {
+  color: #f7f3ff !important;
+}
+
+
+
 
 
 /* En pantallas grandes, colocamos texto y botones en fila */
