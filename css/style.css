@@ -261,6 +261,8 @@ a {
 }
 
 
+
+
 .btn-fendi-primary {
   background: var(--fendi-primary);
   color: #000;
@@ -876,22 +878,31 @@ a {
    AJUSTE COLORES CARTA
    ========================= */
 
-/* SOLO los títulos de categoría en dorado:
-   Shishas, Refrescos, Coffee y té, Cervezas, Vinos, Chupitos, Champagne… */
+/* =========================
+   CARTA – COLORES TITULOS / PRODUCTOS
+   ========================= */
+
+/* SOLO el título principal de cada tarjeta (Shishas, Refrescos, Coffee y té, etc.) en dorado */
 .menu-card > h2,
-.menu-card > h3,
-.menu-card-title,
-.menu-group-title {
-  color: var(--fendi-primary);
+.menu-card .menu-card-title {
+  color: var(--fendi-primary) !important;
 }
 
-/* Todos los productos y precios en blanco, sí o sí */
+/* Todo lo demás dentro de la tarjeta en blanco */
+.menu-card h2:not(:first-of-type),
+.menu-card h3,
+.menu-card h4,
+.menu-card h5,
+.menu-card h6,
+.menu-card p,
+.menu-card li,
+.menu-card span,
 .menu-card .menu-item-name,
 .menu-card .menu-item-price,
-.menu-card .menu-item-nota,
-.menu-card .menu-list li span {
+.menu-card .menu-item-nota {
   color: #f7f3ff !important;
 }
+  
 
 
 

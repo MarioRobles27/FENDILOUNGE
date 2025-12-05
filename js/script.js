@@ -71,6 +71,8 @@ if (canadaEl) {
 }
 
 
+
+
   // ---------------- GALERÍA HORIZONTAL SCROLL FENDI ----------------
   const scrollGalleryWrapper = document.querySelector(".fendi-scroll-gallery-wrapper");
 
