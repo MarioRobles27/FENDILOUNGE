@@ -326,6 +326,17 @@ a {
   margin-bottom: 0.4rem;
 }
 
+/* Página de carta: título más grande */
+.page-hero--carta .page-title {
+  font-size: clamp(3rem, 6vw, 4rem);
+}
+
+.page-hero--carta .page-subtitle {
+  font-size: 1rem;
+  max-width: 42rem;
+}
+
+
 .page-subtitle {
   opacity: 0.8;
   max-width: 40rem;
@@ -482,6 +493,140 @@ a {
   transform: translateY(-4px) scale(1.02);
   filter: saturate(1.3);
 }
+
+
+/* =========================
+   GALERÍA INDEX – GRID SIMÉTRICO
+   ========================= */
+
+.fendi-gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr)); /* 3 columnas simétricas en desktop */
+  grid-auto-rows: 190px;                            /* todas las filas misma altura */
+  gap: 1.1rem;
+}
+
+.fendi-gallery-item {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+  background: #050505;
+}
+
+/* todas las imágenes mismas proporciones dentro de cada celda */
+.fendi-gallery-item .gallery-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition:
+    transform 0.45s ease,
+    filter 0.45s ease,
+    opacity 0.45s ease;
+}
+
+/* NEUTRALIZAMOS LAS VARIANTES, ya no hay spans diferentes */
+.fendi-gallery-item--tall,
+.fendi-gallery-item--wide,
+.fendi-gallery-item--xl {
+  grid-column: span 1;
+  grid-row: span 1;
+}
+
+/* Overlay con info y gradient */
+.fendi-gallery-overlay {
+  position: absolute;
+  inset: 0;
+  padding: 1rem 1.1rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: 0.4rem;
+
+  background: linear-gradient(
+    to top,
+    rgba(0, 0, 0, 0.88),
+    rgba(0, 0, 0, 0.25),
+    transparent 55%
+  );
+
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 0.4s ease,
+    transform 0.4s ease;
+}
+
+.fendi-gallery-pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.18rem 0.7rem;
+  border-radius: 999px;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  background: rgba(207, 179, 97, 0.15);
+  border: 1px solid rgba(207, 179, 97, 0.6);
+  color: var(--fendi-primary);
+}
+
+.fendi-gallery-caption {
+  margin: 0;
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #f7f3ff;
+  max-width: 24rem;
+}
+
+/* Glow en hover */
+.fendi-gallery-item::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  border: 1px solid rgba(207, 179, 97, 0);
+  box-shadow: 0 0 0 rgba(207, 179, 97, 0);
+  transition:
+    border-color 0.4s ease,
+    box-shadow 0.4s ease;
+}
+
+.fendi-gallery-item:hover .gallery-img {
+  transform: scale(1.06);
+  filter: saturate(1.3);
+  opacity: 0.96;
+}
+
+.fendi-gallery-item:hover .fendi-gallery-overlay {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.fendi-gallery-item:hover::after {
+  border-color: rgba(207, 179, 97, 0.7);
+  box-shadow: 0 0 24px rgba(207, 179, 97, 0.3);
+}
+
+/* Tablet: 2 columnas simétricas */
+@media (max-width: 991.98px) {
+  .fendi-gallery-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-auto-rows: 170px;
+  }
+}
+
+/* Móvil: 2 columnas pero algo más bajitas */
+@media (max-width: 575.98px) {
+  .fendi-gallery-grid {
+    grid-auto-rows: 150px;
+    gap: 0.8rem;
+  }
+
+  .fendi-gallery-caption {
+    font-size: 0.8rem;
+  }
+}
+
 
 /* =========================
    FORMULARIOS
@@ -813,21 +958,6 @@ a {
 
 /* ===== COLORES DE TÍTULOS Y TEXTOS ===== */
 
-/* Títulos de categoría de la carta: Shishas, Refrescos, Coffee y té, etc. */
-.menu-card h2,
-.menu-card h3,
-.menu-card-title,
-.menu-subtitle-title,
-.menu-group-title {
-  color: var(--fendi-primary); /* dorado corporativo */
-}
-
-/* Texto de productos, precios y notas en blanco */
-.menu-item-name,
-.menu-item-price,
-.menu-item-nota {
-  color: #f7f3ff;
-}
 
 /* ===== Overlay del foco (efecto spotlight) ===== */
 
@@ -882,27 +1012,48 @@ a {
    CARTA – COLORES TITULOS / PRODUCTOS
    ========================= */
 
-/* SOLO el título principal de cada tarjeta (Shishas, Refrescos, Coffee y té, etc.) en dorado */
-.menu-card > h2,
-.menu-card .menu-card-title {
-  color: var(--fendi-primary) !important;
+/* =========================
+   CARTA – TÍTULOS EN DORADO
+   ========================= */
+
+/* Solo los títulos de sección: Shishas, Refrescos, Coffee y té, Batidos, Vinos, etc. */
+.menu-card .menu-title {
+  color: var(--fendi-primary);
 }
 
-/* Todo lo demás dentro de la tarjeta en blanco */
-.menu-card h2:not(:first-of-type),
-.menu-card h3,
-.menu-card h4,
-.menu-card h5,
-.menu-card h6,
-.menu-card p,
-.menu-card li,
-.menu-card span,
-.menu-card .menu-item-name,
-.menu-card .menu-item-price,
-.menu-card .menu-item-nota {
-  color: #f7f3ff !important;
+
+
+
+
+/* =========================
+   EFECTO TUBES CURSOR (CANVAS GLOBAL)
+   ========================= */
+
+#canvas {
+  position: fixed;
+  inset: 0;              /* top: 0; right: 0; bottom: 0; left: 0; */
+  width: 100%;
+  height: 100%;
+  pointer-events: none;  /* no bloquea clics ni scroll */
+  z-index: 0;            /* por debajo del contenido */
 }
-  
+
+/* Aseguramos que todo el contenido quede por encima */
+header,
+section,
+footer,
+.cookie-banner,
+.navbar {
+  position: relative;
+  z-index: 1;
+}
+
+/* Ocultar el efecto en pantallas pequeñas (móvil) */
+@media (max-width: 767.98px) {
+  #canvas {
+    display: none;
+  }
+}
 
 
 
@@ -936,5 +1087,22 @@ a {
 
   .page-title {
     font-size: 2rem;
+  }
+}
+
+/* =========================
+   HERO – AJUSTE RESPONSIVE
+   ========================= */
+
+@media (max-width: 767.98px) {
+  /* Reducimos tamaño del FENDI LOUNGE y permitimos salto de línea si hace falta */
+  .hero-title-line3 {
+    font-size: clamp(2.2rem, 10vw, 3rem);
+  }
+
+  .hero-canada.text5 {
+    white-space: normal;      /* que pueda partir en dos líneas si lo necesita */
+    text-align: center;
+    letter-spacing: 0.12em;   /* un pelín menos para que quepa mejor */
   }
 }

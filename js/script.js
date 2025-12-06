@@ -1,3 +1,6 @@
+
+
+
 // MAIN JS FENDI LOUNGE
 
 // Aseguramos que GSAP y ScrollTrigger estén cargados
@@ -13,65 +16,152 @@ if (typeof gsap !== "undefined") {
     delay: 0.2
   });
 
-  // ---------------- Bloques .gsap-fade-up ----------------
-  const fadeUpElements = document.querySelectorAll(".gsap-fade-up");
-  fadeUpElements.forEach((el) => {
-    gsap.from(el, {
+   // ---------------- HERO CARTA: animación épica ----------------
+  const cartaHero = document.querySelector(".page-hero--carta");
+
+  if (cartaHero) {
+    const titleEl = cartaHero.querySelector(".page-title");
+    const subtitleEl = cartaHero.querySelector(".page-subtitle");
+
+    // 1) Split del título en palabras para animarlas una a una
+    if (titleEl) {
+      const rawText = titleEl.textContent.trim();
+      const words = rawText.split(" ");
+
+      titleEl.innerHTML = ""; // vaciamos
+      words.forEach((word, idx) => {
+        const span = document.createElement("span");
+        span.textContent = word;
+        span.style.display = "inline-block";
+        span.style.marginRight = idx === words.length - 1 ? "0" : "0.35em";
+        span.classList.add("carta-title-word");
+        titleEl.appendChild(span);
+      });
+    }
+
+    const tlCarta = gsap.timeline({
+      defaults: { ease: "power3.out" }
+    });
+
+    // 2) El hero en general aparece con ligera subida y escala
+    tlCarta.from(cartaHero, {
+      opacity: 0,
+      y: 40,
+      scale: 0.96,
+      duration: 0.7
+    });
+
+    // 3) Cada palabra del título entra con blur y subida
+    const titleWords = cartaHero.querySelectorAll(".carta-title-word");
+    if (titleWords.length) {
+      tlCarta.from(
+        titleWords,
+        {
+          y: 30,
+          opacity: 0,
+          filter: "blur(8px)",
+          duration: 0.8,
+          stagger: 0.07
+        },
+        "-=0.3" // empieza mientras aún se anima el fondo
+      );
+    }
+
+    // 4) El subtítulo entra después, también con blur suave
+    if (subtitleEl) {
+      tlCarta.from(
+        subtitleEl,
+        {
+          y: 20,
+          opacity: 0,
+          filter: "blur(10px)",
+          duration: 0.7
+        },
+        "-=0.25"
+      );
+    }
+  }
+  // ---------------- GALERÍA INDEX: animación mosaico ----------------
+  const galleryItems = document.querySelectorAll("#fendiGallery .fendi-gallery-item");
+
+  if (galleryItems.length) {
+    gsap.from(galleryItems, {
       scrollTrigger: {
-        trigger: el,
-        start: "top 80%",
-        toggleActions: "play none none reverse"
+        trigger: "#gallery",
+        start: "top 75%"
       },
       opacity: 0,
       y: 40,
+      scale: 0.96,
       duration: 0.9,
-      ease: "power3.out"
+      ease: "power3.out",
+      stagger: 0.08
     });
-  });
+  }
 
   // ---------------- EFECTO "FENDI LOUNGE" SUBE/BAJA ----------------
-const canadaEl = document.querySelector(".hero-canada.text5");
+  const canadaEl = document.querySelector(".hero-canada.text5");
 
-if (canadaEl) {
-  const originalText = canadaEl.textContent.trim();
+  if (canadaEl) {
+    // Si ya existen spans .hero-word (FENDI / LOUNGE), trabajamos dentro de ellos.
+    // Si no existen, usamos el comportamiento antiguo como fallback.
+    const wordWrappers = canadaEl.querySelectorAll(".hero-word");
+    let letters;
 
-  canadaEl.textContent = "";
-  originalText.split("").forEach((char) => {
-    const span = document.createElement("span");
-    span.textContent = char === " " ? "\u00A0" : char;
-    canadaEl.appendChild(span);
-  });
+    if (wordWrappers.length) {
+      // MODO NUEVO: FENDI y LOUNGE en contenedores separados
+      wordWrappers.forEach((wordEl) => {
+        const text = wordEl.textContent.trim();
+        wordEl.textContent = "";
 
-  const letters = canadaEl.querySelectorAll("span");
+        text.split("").forEach((char) => {
+          const span = document.createElement("span");
+          span.textContent = char;
+          wordEl.appendChild(span);
+        });
+      });
 
-  // Estado base: más tenue para que el golpe de luz sea potente
-  gsap.set(letters, {
-    opacity: 0.25,
-    y: 0
-  });
+      // Todas las letras son los spans dentro de .hero-word
+      letters = canadaEl.querySelectorAll(".hero-word span");
+    } else {
+      // MODO COMPATIBLE: estructura antigua, todo el texto plano dentro de .hero-canada
+      const originalText = canadaEl.textContent.trim();
 
-  const tl = gsap.timeline({ repeat: -1 });
+      canadaEl.textContent = "";
+      originalText.split("").forEach((char) => {
+        const span = document.createElement("span");
+        span.textContent = char === " " ? "\u00A0" : char;
+        canadaEl.appendChild(span);
+      });
 
-  tl.to(letters, {
-    duration: 0.5,
-    opacity: 1,
-    y: -12,              // suben más
-    ease: "power2.out",
-    stagger: 0.06,       // ola un pelín más rápida
-    delay: 0.3
-  })
-  .to(letters, {
-    duration: 0.5,
-    opacity: 0.25,       // vuelven a tenue, pero sin desaparecer
-    y: 0,
-    ease: "power2.inOut",
-    stagger: 0.06,
-    delay: 0.25
-  });
-}
+      letters = canadaEl.querySelectorAll("span");
+    }
 
+    // Estado base: más tenue
+    gsap.set(letters, {
+      opacity: 0.25,
+      y: 0
+    });
 
+    const tl = gsap.timeline({ repeat: -1 });
 
+    tl.to(letters, {
+      duration: 0.5,
+      opacity: 1,
+      y: -12,              // suben
+      ease: "power2.out",
+      stagger: 0.06,
+      delay: 0.3
+    })
+    .to(letters, {
+      duration: 0.5,
+      opacity: 0.25,
+      y: 0,
+      ease: "power2.inOut",
+      stagger: 0.06,
+      delay: 0.25
+    });
+  }
 
   // ---------------- GALERÍA HORIZONTAL SCROLL FENDI ----------------
   const scrollGalleryWrapper = document.querySelector(".fendi-scroll-gallery-wrapper");
@@ -209,9 +299,7 @@ if (typeof AOS !== "undefined") {
   AOS.init();
 }
 
-
 // ---------- CARTA: efecto spotlight en las 3 columnas principales ----------
-
 (function () {
   const cardsContainer = document.querySelector(".menu-cards");
   if (!cardsContainer) return; // solo en carta.html
