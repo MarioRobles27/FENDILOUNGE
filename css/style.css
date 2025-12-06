@@ -318,6 +318,7 @@ a {
   align-items: center;
   justify-content: center;
   text-align: center;
+  background: #00000000;
 }
 
 
@@ -916,7 +917,9 @@ a {
   display: flex;
   flex-wrap: wrap;
   gap: 2.5rem;
+  align-items: flex-start;  /* 👈 clave: que NO estire las cards en altura */
 }
+
 
 /* Cada “tarjeta” de la carta */
 .menu-card {
@@ -985,6 +988,8 @@ a {
   display: flex;
   flex-wrap: wrap;
   gap: 2.5rem;
+    align-items: flex-start;  /* opcional, pero limpio */
+
 }
 
 /* cómo se ve la card “iluminada” */
